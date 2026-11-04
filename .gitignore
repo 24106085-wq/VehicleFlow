@@ -1,0 +1,18 @@
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+proj/backend/.env
+proj/frontend/.env
+
+# Database and backups
+proj/backend/data/*.db
+proj/backend/data/*.db-*
+proj/backend/data/*.sqlite
+proj/backend/data/*.sqlite3
+
+# Dependencies and builds
+node_modules/
+dist/
+coverage/
