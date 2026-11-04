@@ -11,6 +11,7 @@ export function insertDemoData() {
 const mechs = [['Engine & Transmission', 'available'], ['Brakes & Suspension', 'busy'], ['Electrical & AC', 'available']];
 const users = [
   ['Aarav Mehta', 'admin@vehicleflow.com', 'Admin@123', 'admin', '9820000001'],
+  ['Vedant Mayekar', 'customer24106085@apsit.edu.in', 'Vedant@2005', 'customer', '9820000085'],
   ['Ravi Kulkarni', 'ravi@vehicleflow.com', 'Mech@1234', 'mechanic', '9820000002'],
   ['Sunil Patil', 'sunil@vehicleflow.com', 'Mech@1234', 'mechanic', '9820000003'],
   ['Imran Shaikh', 'imran@vehicleflow.com', 'Mech@1234', 'mechanic', '9820000004'],
