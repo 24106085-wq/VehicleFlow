@@ -1,0 +1,51 @@
+# VehicleFlow: frontend (nginx) + backend (Express + SQLite). Only two services, no database server.
+# Start everything with:  docker compose up -d --build
+name: vehicleflow
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: vehicleflow-backend
+    restart: unless-stopped
+    environment:
+      PORT: 5000
+      DB_PATH: /app/data/vehicleflow.db     # fixed on purpose: this path is inside the persistent volume below
+      JWT_SECRET: ${JWT_SECRET:?Copy .env.example to .env and set JWT_SECRET}
+      CLIENT_URL: ${CLIENT_URL:-http://localhost:8080}
+      SEED_DEMO_DATA: ${SEED_DEMO_DATA:-true}   # demo data is added ONLY if the database is completely empty
+    volumes:
+      - sqlite_data:/app/data               # named volume: the SQLite file survives restarts, rebuilds, recreation and "docker compose down"
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-5001}:5000"
+    stop_grace_period: 15s                  # time for the backend to close the database cleanly on stop
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_API_URL: /api
+    container_name: vehicleflow-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  sqlite_data:      # real name on your PC: vehicleflow_sqlite_data (never removed by "docker compose down")

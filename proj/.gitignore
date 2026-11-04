@@ -1,0 +1,11 @@
+node_modules
+.env
+dist
+backups
+
+# SQLite database files (local runs and backups)
+backend/data/
+data/
+*.db
+*.db-wal
+*.db-shm

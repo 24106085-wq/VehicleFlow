@@ -1,0 +1,4 @@
+# Keep Linux line endings so files copied into containers work when cloned on Windows.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
